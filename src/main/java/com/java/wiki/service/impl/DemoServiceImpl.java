@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.java.wiki.domain.Demo;
 import com.java.wiki.service.DemoService;
 import com.java.wiki.mapper.DemoMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoServiceImpl extends ServiceImpl<DemoMapper, Demo>
     implements DemoService{
+
+    @Autowired
+    private DemoMapper demoMapper  ;
 
 }
 
