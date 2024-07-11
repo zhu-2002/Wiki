@@ -1,5 +1,10 @@
 package com.java.wiki.resp;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CommonResp<T> {
 
     /**
@@ -17,29 +22,6 @@ public class CommonResp<T> {
      */
     private T content;
 
-    public boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getContent() {
-        return content;
-    }
-
-    public void setContent(T content) {
-        this.content = content;
-    }
 
     @Override
     public String toString() {
