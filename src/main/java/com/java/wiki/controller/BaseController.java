@@ -1,6 +1,7 @@
 package com.java.wiki.controller;
 
 import com.java.wiki.domain.Test;
+import com.java.wiki.service.TestService;
 import com.java.wiki.service.impl.TestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,7 @@ public class BaseController {
     private String name ;
 
     @Autowired
-    private TestServiceImpl testServiceImpl;
+    private TestService testService;
     /**
      * /hello
      * @return "hello"
@@ -30,7 +31,7 @@ public class BaseController {
 
     @GetMapping("/test")
     public List<Test> list(){
-        return testServiceImpl.list() ;
+        return testService.list() ;
     }
 
 }
