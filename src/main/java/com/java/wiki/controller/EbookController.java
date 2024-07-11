@@ -1,16 +1,15 @@
 package com.java.wiki.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.java.wiki.domain.Ebook;
-import com.java.wiki.domain.Test;
 import com.java.wiki.resp.CommonResp;
-import com.java.wiki.service.impl.EbookServiceImpl;
-import com.java.wiki.service.impl.TestServiceImpl;
+import com.java.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Wrapper;
 import java.util.List;
 
 @RestController
@@ -18,21 +17,14 @@ import java.util.List;
 public class EbookController {
 
     @Autowired
-    private EbookServiceImpl ebookServiceImpl;
-    /**
-     * /hello
-     * @return "hello"
-     */
-    @GetMapping("/hello")
-    public String hello()
-    {
-        return "hello !";
-    }
+    private EbookService ebookService;
 
     @GetMapping("/test")
     public CommonResp list(){
         CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> ebookList = ebookServiceImpl.list() ;
+        QueryWrapper<Ebook> wrapper = new QueryWrapper<>() ;
+        wrapper.like("name","e");
+        List<Ebook> ebookList = ebookService.list(wrapper) ;
         resp.setContent(ebookList);
         return resp;
     }
