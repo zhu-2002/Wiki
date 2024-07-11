@@ -1,7 +1,7 @@
 package com.java.wiki.util;
 
 
-import com.jiawa.wiki.resp.UserLoginResp;
+import com.java.wiki.resp.UserLoginResp;
 
 import java.io.Serializable;
 
