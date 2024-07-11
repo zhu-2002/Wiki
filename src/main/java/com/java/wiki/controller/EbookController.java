@@ -2,6 +2,7 @@ package com.java.wiki.controller;
 
 import com.java.wiki.domain.Ebook;
 import com.java.wiki.domain.Test;
+import com.java.wiki.resp.CommonResp;
 import com.java.wiki.service.impl.EbookServiceImpl;
 import com.java.wiki.service.impl.TestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,11 @@ public class EbookController {
     }
 
     @GetMapping("/test")
-    public List<Ebook> list(){
-        return ebookServiceImpl.list() ;
+    public CommonResp list(){
+        CommonResp<List<Ebook>> resp = new CommonResp<>();
+        List<Ebook> ebookList = ebookServiceImpl.list() ;
+        resp.setContent(ebookList);
+        return resp;
     }
 
 }
