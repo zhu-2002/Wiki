@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("ebook")
-public class EbookController {
+public class EbookController extends BaseController{
 
     @Autowired
     private EbookService ebookService;
