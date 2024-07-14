@@ -29,7 +29,7 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
 
     @Override
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
-        PageHelper.startPage(1,3);
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookList = ebookMapper.selectList(null);
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
 
