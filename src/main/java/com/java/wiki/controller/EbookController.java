@@ -1,8 +1,12 @@
 package com.java.wiki.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
 import com.java.wiki.domain.Ebook;
+import com.java.wiki.req.EbookQueryReq;
 import com.java.wiki.resp.CommonResp;
+import com.java.wiki.resp.EbookQueryResp;
+import com.java.wiki.resp.PageResp;
 import com.java.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +24,10 @@ public class EbookController extends BaseController{
     private EbookService ebookService;
 
     @GetMapping("/test")
-    public CommonResp list(){
-        CommonResp<List<Ebook>> resp = new CommonResp<>();
-        QueryWrapper<Ebook> wrapper = new QueryWrapper<>() ;
-        wrapper.like("name","e");
-        List<Ebook> ebookList = ebookService.list(wrapper) ;
-        resp.setContent(ebookList);
+    public CommonResp list(EbookQueryReq req){
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
+        PageResp<EbookQueryResp> list = ebookService.list(req);
+        resp.setContent(list);
         return resp;
     }
 

@@ -1,10 +1,19 @@
 package com.java.wiki.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.java.wiki.domain.Ebook;
+import com.java.wiki.req.EbookQueryReq;
+import com.java.wiki.resp.EbookQueryResp;
+import com.java.wiki.resp.PageResp;
 import com.java.wiki.service.EbookService;
 import com.java.wiki.mapper.EbookMapper;
+import com.java.wiki.util.CopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author Zenos
@@ -15,6 +24,23 @@ import org.springframework.stereotype.Service;
 public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
     implements EbookService{
 
+    @Autowired
+    private EbookMapper ebookMapper ;
+
+    @Override
+    public PageResp<EbookQueryResp> list(EbookQueryReq req) {
+        PageHelper.startPage(1,3);
+        List<Ebook> ebookList = ebookMapper.selectList(null);
+        PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
+
+        List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
+
+        PageResp<EbookQueryResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+
+        return pageResp ;
+    }
 }
 
 
