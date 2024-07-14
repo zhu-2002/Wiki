@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java.wiki.domain.Ebook;
 import com.java.wiki.req.EbookQueryReq;
+import com.java.wiki.req.EbookSaveReq;
 import com.java.wiki.resp.EbookQueryResp;
 import com.java.wiki.resp.PageResp;
 import com.java.wiki.service.EbookService;
@@ -40,6 +41,18 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
         pageResp.setList(list);
 
         return pageResp ;
+    }
+
+    @Override
+    public void save(EbookSaveReq req) {
+        Ebook ebook = CopyUtil.copy(req, Ebook.class);
+        if (req.getId() == null){
+            //新增
+            ebookMapper.insert(ebook);
+        }else {
+            //更新
+            ebookMapper.updateById(ebook);
+        }
     }
 }
 

@@ -3,6 +3,7 @@ package com.java.wiki.service;
 import com.java.wiki.domain.Ebook;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.java.wiki.req.EbookQueryReq;
+import com.java.wiki.req.EbookSaveReq;
 import com.java.wiki.resp.EbookQueryResp;
 import com.java.wiki.resp.PageResp;
 
@@ -16,4 +17,6 @@ import java.util.List;
 public interface EbookService extends IService<Ebook> {
 
     PageResp<EbookQueryResp> list(EbookQueryReq req);
+
+    void save(EbookSaveReq req);
 }
