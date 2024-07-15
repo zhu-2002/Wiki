@@ -11,6 +11,7 @@ import com.java.wiki.resp.PageResp;
 import com.java.wiki.service.EbookService;
 import com.java.wiki.mapper.EbookMapper;
 import com.java.wiki.util.CopyUtil;
+import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
 
     @Autowired
     private EbookMapper ebookMapper ;
+
+    @Autowired
+    private SnowFlake snowFlake ;
 
     @Override
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
@@ -48,6 +52,7 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
         if (req.getId() == null){
             //新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);
         }else {
             //更新
