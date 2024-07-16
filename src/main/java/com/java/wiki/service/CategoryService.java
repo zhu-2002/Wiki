@@ -2,6 +2,10 @@ package com.java.wiki.service;
 
 import com.java.wiki.domain.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.java.wiki.req.CategoryQueryReq;
+import com.java.wiki.req.CategorySaveReq;
+import com.java.wiki.resp.CategoryQueryResp;
+import com.java.wiki.resp.PageResp;
 
 /**
 * @author Zenos
@@ -10,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CategoryService extends IService<Category> {
 
+    PageResp<CategoryQueryResp> list(CategoryQueryReq req);
+
+    void save(CategorySaveReq req);
 }
