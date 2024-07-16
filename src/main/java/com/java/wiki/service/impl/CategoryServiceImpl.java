@@ -35,23 +35,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     private SnowFlake snowFlake ;
 
     @Override
-    public PageResp<CategoryQueryResp> list(CategoryQueryReq req) {
-        PageHelper.startPage(req.getPage(),req.getSize());
-        QueryWrapper<Category> wrapper = null ;
+    public List<CategoryQueryResp> list(CategoryQueryReq req) {
+        QueryWrapper<Category> wrapper = new QueryWrapper<>() ;
+        wrapper.orderByAsc("sort");
         if (!ObjectUtils.isEmpty(req.getName())) {
-            wrapper = new QueryWrapper<>();
             wrapper.like("name","%" + req.getName() + "%");
         }
         List<Category> categoryList = categoryMapper.selectList(wrapper);
-        PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
-
         List<CategoryQueryResp> list = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
 
-        PageResp<CategoryQueryResp> pageResp = new PageResp<>();
-        pageResp.setTotal(pageInfo.getTotal());
-        pageResp.setList(list);
-
-        return pageResp ;
+        return list ;
     }
 
     @Override

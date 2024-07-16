@@ -7,6 +7,8 @@ import com.java.wiki.req.CategorySaveReq;
 import com.java.wiki.resp.CategoryQueryResp;
 import com.java.wiki.resp.PageResp;
 
+import java.util.List;
+
 /**
 * @author Zenos
 * @description 针对表【category(分类)】的数据库操作Service
@@ -14,7 +16,7 @@ import com.java.wiki.resp.PageResp;
 */
 public interface CategoryService extends IService<Category> {
 
-    PageResp<CategoryQueryResp> list(CategoryQueryReq req);
+    List<CategoryQueryResp> list(CategoryQueryReq req);
 
     void save(CategorySaveReq req);
 }
