@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
 * @author Zenos
@@ -37,10 +38,12 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
     @Override
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         PageHelper.startPage(req.getPage(),req.getSize());
-        QueryWrapper<Ebook> wrapper = null ;
+        QueryWrapper<Ebook> wrapper = new QueryWrapper<>();
         if (!ObjectUtils.isEmpty(req.getName())) {
-            wrapper = new QueryWrapper<>();
             wrapper.like("name","%" + req.getName() + "%");
+        }
+        if (!ObjectUtils.isEmpty(req.getCategoryId2())) {
+            wrapper.eq("category2_id",req.getCategoryId2());
         }
         List<Ebook> ebookList = ebookMapper.selectList(wrapper);
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
