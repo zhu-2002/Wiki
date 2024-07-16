@@ -1,5 +1,6 @@
 package com.java.wiki.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +15,7 @@ import com.java.wiki.util.CopyUtil;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -35,7 +37,12 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
     @Override
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         PageHelper.startPage(req.getPage(),req.getSize());
-        List<Ebook> ebookList = ebookMapper.selectList(null);
+        QueryWrapper<Ebook> wrapper = null ;
+        if (!ObjectUtils.isEmpty(req.getName())) {
+            wrapper = new QueryWrapper<>();
+            wrapper.like("name","%" + req.getName() + "%");
+        }
+        List<Ebook> ebookList = ebookMapper.selectList(wrapper);
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
 
         List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
