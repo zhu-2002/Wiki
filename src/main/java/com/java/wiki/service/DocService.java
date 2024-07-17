@@ -2,6 +2,11 @@ package com.java.wiki.service;
 
 import com.java.wiki.domain.Doc;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.java.wiki.req.DocQueryReq;
+import com.java.wiki.req.DocSaveReq;
+import com.java.wiki.resp.DocQueryResp;
+
+import java.util.List;
 
 /**
 * @author Zenos
@@ -10,4 +15,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface DocService extends IService<Doc> {
 
+
+    List<DocQueryResp> list(DocQueryReq req);
+
+    void save(DocSaveReq req);
 }
