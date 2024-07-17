@@ -3,7 +3,9 @@ package com.java.wiki.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.java.wiki.domain.Content;
 import com.java.wiki.domain.Doc;
+import com.java.wiki.mapper.ContentMapper;
 import com.java.wiki.mapper.DocMapper;
 import com.java.wiki.req.DocQueryReq;
 import com.java.wiki.req.DocSaveReq;
@@ -30,6 +32,9 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
     @Autowired
     private SnowFlake snowFlake ;
 
+    @Autowired
+    private ContentMapper contentMapper ;
+
     @Override
     public List<DocQueryResp> list(DocQueryReq req) {
         QueryWrapper<Doc> wrapper = new QueryWrapper<>() ;
@@ -46,13 +51,26 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
     @Override
     public void save(DocSaveReq req) {
         Doc doc = CopyUtil.copy(req, Doc.class);
+        Content content = CopyUtil.copy(req, Content.class);
         if (req.getId() == null){
             //新增
+
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
-        }else {
+            //新增
+            content.setId(doc.getId());
+            contentMapper.insert(content);
+        } else if ( contentMapper.selectById(doc.getId()) == null ) {
             //更新
             docMapper.updateById(doc);
+            //新增
+            content.setId(doc.getId());
+            contentMapper.insert(content);
+        } else {
+            //更新
+            docMapper.updateById(doc);
+            //更新
+            contentMapper.updateById(content);
         }
     }
 }
