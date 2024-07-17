@@ -73,6 +73,15 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
             contentMapper.updateById(content);
         }
     }
+
+    @Override
+    public String findContent(Long id) {
+        Content content = contentMapper.selectById(id);
+        if ( content == null ){
+            return "";
+        }
+        return content.getContent();
+    }
 }
 
 
