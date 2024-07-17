@@ -26,6 +26,13 @@ public class DocsController extends BaseController {
         resp.setContent(list);
         return resp;
     }
+    @GetMapping("/list/{ebookId}")
+    public CommonResp all(@PathVariable Long ebookId) {
+        CommonResp<List<DocQueryResp>> resp = new CommonResp<>();
+        List<DocQueryResp> list = docService.listByEbookId(ebookId);
+        resp.setContent(list);
+        return resp;
+    }
 
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody DocSaveReq req) {

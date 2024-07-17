@@ -18,6 +18,8 @@ public interface DocService extends IService<Doc> {
 
     List<DocQueryResp> list(DocQueryReq req);
 
+    List<DocQueryResp> listByEbookId(Long ebookId);
+
     void save(DocSaveReq req);
 
     String findContent(Long id);

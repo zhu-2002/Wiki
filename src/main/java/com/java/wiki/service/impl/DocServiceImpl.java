@@ -49,6 +49,19 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
     }
 
     @Override
+    public List<DocQueryResp> listByEbookId(Long ebookId) {
+        QueryWrapper<Doc> wrapper = new QueryWrapper<>() ;
+        wrapper.orderByAsc("sort");
+        if (!ObjectUtils.isEmpty(ebookId)) {
+            wrapper.eq("ebook_id",ebookId);
+        }
+        List<Doc> docList = docMapper.selectList(wrapper);
+        List<DocQueryResp> list = CopyUtil.copyList(docList, DocQueryResp.class);
+
+        return list ;
+    }
+
+    @Override
     public void save(DocSaveReq req) {
         Doc doc = CopyUtil.copy(req, Doc.class);
         Content content = CopyUtil.copy(req, Content.class);
