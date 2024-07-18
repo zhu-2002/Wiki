@@ -1,9 +1,7 @@
 package com.java.wiki.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import lombok.Data;
 
@@ -23,6 +21,8 @@ public class User implements Serializable {
     /**
      * 登陆名
      */
+    // 当插入数据时，如果字段的值为空，则使用数据库默认值
+    @TableField(updateStrategy = FieldStrategy.NOT_EMPTY )
     private String loginName;
 
     /**

@@ -6,6 +6,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java.wiki.domain.User;
 import com.java.wiki.domain.User;
+import com.java.wiki.exception.BusinessException;
+import com.java.wiki.exception.BusinessExceptionCode;
 import com.java.wiki.mapper.UserMapper;
 import com.java.wiki.req.UserQueryReq;
 import com.java.wiki.req.UserQueryReq;
@@ -59,12 +61,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public void save(UserSaveReq req) {
         User user = CopyUtil.copy(req, User.class);
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("login_name",req.getLoginName());
         if (req.getId() == null){
-            //新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            if ( userMapper.selectOne(wrapper) != null ){
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
+            else {
+                //新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+            }
         }else {
             //更新
+            user.setLoginName(null);
             userMapper.updateById(user);
         }
     }
