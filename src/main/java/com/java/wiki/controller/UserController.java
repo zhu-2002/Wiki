@@ -1,6 +1,7 @@
 package com.java.wiki.controller;
 
 import com.java.wiki.req.UserQueryReq;
+import com.java.wiki.req.UserResetPasswordReq;
 import com.java.wiki.req.UserSaveReq;
 import com.java.wiki.resp.CommonResp;
 import com.java.wiki.resp.UserQueryResp;
@@ -29,7 +30,6 @@ public class UserController extends BaseController{
 
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody UserSaveReq req) {
-        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.save(req);
         return resp;
@@ -39,6 +39,13 @@ public class UserController extends BaseController{
     public CommonResp delete(@PathVariable Long id) {
         CommonResp resp = new CommonResp<>();
         userService.removeById(id);
+        return resp;
+    }
+
+    @PostMapping("/reset-password")
+    public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq req) {
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(req);
         return resp;
     }
 }

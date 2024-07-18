@@ -5,22 +5,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java.wiki.domain.User;
-import com.java.wiki.domain.User;
 import com.java.wiki.exception.BusinessException;
 import com.java.wiki.exception.BusinessExceptionCode;
 import com.java.wiki.mapper.UserMapper;
 import com.java.wiki.req.UserQueryReq;
-import com.java.wiki.req.UserQueryReq;
+import com.java.wiki.req.UserResetPasswordReq;
 import com.java.wiki.req.UserSaveReq;
 import com.java.wiki.resp.UserQueryResp;
 import com.java.wiki.resp.PageResp;
-import com.java.wiki.resp.UserQueryResp;
 import com.java.wiki.service.UserService;
 import com.java.wiki.util.CopyUtil;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 
@@ -70,13 +68,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             else {
                 //新增
                 user.setId(snowFlake.nextId());
+                user.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
                 userMapper.insert(user);
             }
         }else {
             //更新
             user.setLoginName(null);
+            user.setPassword(null);
             userMapper.updateById(user);
         }
+    }
+
+    @Override
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        user.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        userMapper.updateById(user);
     }
 }
 

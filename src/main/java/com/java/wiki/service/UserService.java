@@ -3,6 +3,7 @@ package com.java.wiki.service;
 import com.java.wiki.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.java.wiki.req.UserQueryReq;
+import com.java.wiki.req.UserResetPasswordReq;
 import com.java.wiki.req.UserSaveReq;
 import com.java.wiki.resp.PageResp;
 import com.java.wiki.resp.UserQueryResp;
@@ -19,4 +20,6 @@ public interface UserService extends IService<User> {
     PageResp<UserQueryResp> list(UserQueryReq req);
 
     void save(UserSaveReq req);
+
+    void resetPassword(UserResetPasswordReq req);
 }

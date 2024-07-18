@@ -21,18 +21,22 @@ public class User implements Serializable {
     /**
      * 登陆名
      */
-    // 当插入数据时，如果字段的值为空，则使用数据库默认值
+    // 当插入数据时，如果字段的值为空或空字符串，则使用数据库默认值
     @TableField(updateStrategy = FieldStrategy.NOT_EMPTY )
     private String loginName;
 
     /**
      * 昵称
      */
+    // 当插入数据时，如果字段的值为空或空字符串，则使用数据库默认值
+    @TableField(updateStrategy = FieldStrategy.NOT_EMPTY )
     private String name;
 
     /**
      * 密码
      */
+    // 当插入数据时，如果字段的值为空或空字符串，则使用数据库默认值
+    @TableField(updateStrategy = FieldStrategy.NOT_EMPTY )
     private String password;
 
     @TableField(exist = false)
