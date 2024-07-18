@@ -8,9 +8,11 @@ import com.java.wiki.domain.User;
 import com.java.wiki.exception.BusinessException;
 import com.java.wiki.exception.BusinessExceptionCode;
 import com.java.wiki.mapper.UserMapper;
+import com.java.wiki.req.UserLoginReq;
 import com.java.wiki.req.UserQueryReq;
 import com.java.wiki.req.UserResetPasswordReq;
 import com.java.wiki.req.UserSaveReq;
+import com.java.wiki.resp.UserLoginResp;
 import com.java.wiki.resp.UserQueryResp;
 import com.java.wiki.resp.PageResp;
 import com.java.wiki.service.UserService;
@@ -84,6 +86,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = CopyUtil.copy(req, User.class);
         user.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         userMapper.updateById(user);
+    }
+
+    @Override
+    public UserLoginResp login(UserLoginReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        user.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("login_name",user.getLoginName());
+        if ( userMapper.selectOne(wrapper) == null ){
+            // 用户名不存在
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }
+        else {
+            if ( userMapper.selectOne(wrapper).getPassword().equals(user.getPassword()) ){
+                // 密码正确
+                UserLoginResp userLoginResp = CopyUtil.copy(userMapper.selectOne(wrapper), UserLoginResp.class);
+                return userLoginResp;
+            }
+            else {
+                // 密码错误
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+        }
     }
 }
 
