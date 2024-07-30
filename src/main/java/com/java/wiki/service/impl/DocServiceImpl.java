@@ -10,14 +10,13 @@ import com.java.wiki.exception.BusinessException;
 import com.java.wiki.exception.BusinessExceptionCode;
 import com.java.wiki.mapper.ContentMapper;
 import com.java.wiki.mapper.DocMapper;
+import com.java.wiki.mapper.DocMapperCustom;
 import com.java.wiki.mapper.IpMapper;
 import com.java.wiki.req.DocQueryReq;
 import com.java.wiki.req.DocSaveReq;
 import com.java.wiki.resp.DocQueryResp;
 import com.java.wiki.service.DocService;
-import com.java.wiki.service.IpService;
 import com.java.wiki.util.CopyUtil;
-import com.java.wiki.util.RedisOperator;
 import com.java.wiki.util.RequestContext;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,9 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
 
     @Autowired
     private IpMapper ipMapper ;
+
+    @Autowired
+    private DocMapperCustom myDocMapper ;
 
     @Override
     public List<DocQueryResp> list(DocQueryReq req) {
@@ -129,6 +131,11 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
         else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+    }
+
+    @Override
+    public void updateEbookInfo() {
+        myDocMapper.updateEbookInfo();
     }
 }
 
