@@ -39,6 +39,9 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
     public List<DocQueryResp> list(DocQueryReq req) {
         QueryWrapper<Doc> wrapper = new QueryWrapper<>() ;
         wrapper.orderByAsc("sort");
+        if (!ObjectUtils.isEmpty(req.getEbookId())) {
+            wrapper.eq("ebook_id",req.getEbookId());
+        }
         if (!ObjectUtils.isEmpty(req.getName())) {
             wrapper.like("name","%" + req.getName() + "%");
         }
@@ -90,8 +93,13 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
     @Override
     public String findContent(Long id) {
         Content content = contentMapper.selectById(id);
+        Doc doc = docMapper.selectById(id);
         if ( content == null ){
             return "";
+        }
+        else {
+            doc.setViewCount(doc.getViewCount() + 1);
+            docMapper.updateById(doc);
         }
         return content.getContent();
     }
