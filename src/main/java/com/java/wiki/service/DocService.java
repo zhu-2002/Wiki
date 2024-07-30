@@ -23,4 +23,10 @@ public interface DocService extends IService<Doc> {
     void save(DocSaveReq req);
 
     String findContent(Long id);
+
+    void vote(Long id);
+    /**
+     * 点赞
+     */
+
 }

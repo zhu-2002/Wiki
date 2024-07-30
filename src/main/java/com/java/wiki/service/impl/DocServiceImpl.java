@@ -5,13 +5,20 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.java.wiki.domain.Content;
 import com.java.wiki.domain.Doc;
+import com.java.wiki.domain.Ip;
+import com.java.wiki.exception.BusinessException;
+import com.java.wiki.exception.BusinessExceptionCode;
 import com.java.wiki.mapper.ContentMapper;
 import com.java.wiki.mapper.DocMapper;
+import com.java.wiki.mapper.IpMapper;
 import com.java.wiki.req.DocQueryReq;
 import com.java.wiki.req.DocSaveReq;
 import com.java.wiki.resp.DocQueryResp;
 import com.java.wiki.service.DocService;
+import com.java.wiki.service.IpService;
 import com.java.wiki.util.CopyUtil;
+import com.java.wiki.util.RedisOperator;
+import com.java.wiki.util.RequestContext;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +41,9 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
 
     @Autowired
     private ContentMapper contentMapper ;
+
+    @Autowired
+    private IpMapper ipMapper ;
 
     @Override
     public List<DocQueryResp> list(DocQueryReq req) {
@@ -102,6 +112,23 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
             docMapper.updateById(doc);
         }
         return content.getContent();
+    }
+
+    @Override
+    public void vote(Long id) {
+        Doc doc = docMapper.selectById(id);
+        String ipStr = "DOC_VOTE_" + id + "_" + RequestContext.getRemoteAddr();
+        if ( ipMapper.selectById(ipStr) == null ){
+            doc.setVoteCount(doc.getVoteCount() + 1);
+            docMapper.updateById(doc);
+
+            Ip ip = new Ip();
+            ip.setId(ipStr);
+            ipMapper.insert(ip);
+        }
+        else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
     }
 }
 
