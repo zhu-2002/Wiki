@@ -15,6 +15,7 @@ import com.java.wiki.util.CopyUtil;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class EbookServiceImpl extends ServiceImpl<EbookMapper, Ebook>
         return pageResp ;
     }
 
+    @Transactional
     @Override
     public void save(EbookSaveReq req) {
         Ebook ebook = CopyUtil.copy(req, Ebook.class);

@@ -16,6 +16,7 @@ import com.java.wiki.util.CopyUtil;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
         return list ;
     }
 
+    @Transactional
     @Override
     public void save(CategorySaveReq req) {
         Category category = CopyUtil.copy(req, Category.class);

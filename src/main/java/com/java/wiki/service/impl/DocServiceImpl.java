@@ -21,6 +21,7 @@ import com.java.wiki.util.RequestContext;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -76,6 +77,7 @@ public class DocServiceImpl extends ServiceImpl<DocMapper, Doc>
         return list ;
     }
 
+    @Transactional
     @Override
     public void save(DocSaveReq req) {
         Doc doc = CopyUtil.copy(req, Doc.class);

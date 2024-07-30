@@ -20,6 +20,7 @@ import com.java.wiki.util.CopyUtil;
 import com.java.wiki.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.List;
@@ -58,6 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return pageResp ;
     }
 
+    @Transactional
     @Override
     public void save(UserSaveReq req) {
         User user = CopyUtil.copy(req, User.class);
